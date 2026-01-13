@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tsholofelo's 21st Dinner</title>
+
+    <!-- Elegant Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&family=Cormorant+Garamond:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+
+    <style>
+        :root { 
+            --blush: #f8adbc; 
+            --cream: #fffaf0; 
+            --text: #5d4037; 
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8adbc 0%, #ffdde1 100%);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Cormorant Garamond', serif;
+            padding: 20px;
+        }
+
+        .shape {
+            position: fixed;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.3;
+            z-index: 1;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        .card {
+            background: rgba(255, 250, 240, 0.92);
+            width: 100%;
+            max-width: 400px;
+            border-radius: 45px;
+            padding: 35px 25px;
+            text-align: center;
+            border: 8px solid white;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            margin: 10px 0;
+            color: var(--text);
+        }
+
+        h2 {
+            font-family: 'Cherry Bomb One', cursive;
+            color: var(--blush);
+            font-size: 1.2rem;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        .music-control {
+            background: var(--blush);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .timer-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin: 25px 0;
+        }
+
+        .time-box {
+            background: white;
+            padding: 15px 5px;
+            border-radius: 20px;
+        }
+
+        .num {
+            display: block;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--blush);
+        }
+
+        .label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            color: #888;
+        }
+
+        .theme-highlight {
+            background: white;
+            border: 2px dashed var(--blush);
+            padding: 20px;
+            border-radius: 25px;
+            margin: 25px 0;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .btn {
+            display: block;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+
+        .btn-rsvp {
+            background: var(--blush);
+            color: white;
+        }
+
+        .btn-map {
+            background: white;
+            color: var(--blush);
+            border: 2px solid var(--blush);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="shape" style="width:80px;height:80px;top:10%;left:5%;"></div>
+    <div class="shape" style="width:40px;height:40px;bottom:15%;right:10%;animation-delay:2s;"></div>
+
+    <!-- Autoplay Music -->
+    <audio id="invitationMusic" autoplay muted loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="card">
+        <button class="music-control" id="musicBtn">Play Music 🔊</button>
+
+        <h2>Celebrate</h2>
+        <h1>Tsholofelo’s <br>21st Birthday</h1>
+
+        <p><b>07 February 2026</b></p>
+        <p style="color:#777;">The Codfather, Polofields Crossing<br>at 16:30</p>
+
+        <div class="timer-container">
+            <div class="time-box"><span class="num" id="d">00</span><span class="label">Days</span></div>
+            <div class="time-box"><span class="num" id="h">00</span><span class="label">Hours</span></div>
+            <div class="time-box"><span class="num" id="m">00</span><span class="label">Mins</span></div>
+            <div class="time-box"><span class="num" id="s">00</span><span class="label">Secs</span></div>
+        </div>
+
+        <div class="theme-highlight">
+            Dress Code: Wrapped in Cream ✨
+        </div>
+
+        <a
+            href="https://wa.me/27XXXXXXXXX?text=I%20will%20be%20there!"
+            target="_blank"
+            class="btn btn-rsvp">
+            RSVP via WhatsApp 💬
+        </a>
+
+        <a
+            href="https://www.google.com/maps/search/?api=1&query=The+Codfather+Polofields+Crossing"
+            target="_blank"
+            class="btn btn-map">
+            Open Google Maps 📍
+        </a>
+    </div>
+
+    <script>
+        const music = document.getElementById("invitationMusic");
+        const btn = document.getElementById("musicBtn");
+
+        btn.addEventListener("click", () => {
+            music.muted = false;
+            music.play();
+            btn.textContent = "Music Playing 🎶";
+        });
+
+        const eventDate = new Date("2026-02-07T16:30:00");
+
+        setInterval(() => {
+            const now = new Date();
+            const diff = eventDate - now;
+            if (diff <= 0) return;
+
+            document.getElementById("d").textContent =
+                Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById("h").textContent =
+                Math.floor((diff / (1000 * 60 * 60)) % 24);
+            document.getElementById("m").textContent =
+                Math.floor((diff / (1000 * 60)) % 60);
+            document.getElementById("s").textContent =
+                Math.floor((diff / 1000) % 60);
+        }, 1000);
+    </script>
+
+</body>
+</html>
